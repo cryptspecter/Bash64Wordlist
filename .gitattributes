@@ -1,0 +1,3 @@
+# Ensure all shell scripts use LF on checkout
+Bash64Wordlist text eol=lf
+Bash64Wordlist.sh text eol=lf
