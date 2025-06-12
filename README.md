@@ -1,15 +1,15 @@
 # 🔐 Bash64Wordlist
 
-**Bash64Wordlist** is a lightweight Bash tool for generating Base64-encoded wordlists in the `username:password` format, designed primarily for HTTP Basic Authentication brute-forcing and fuzzing scenarios in bug bounty and penetration testing.
+**Bash64Wordlist** is a simple Bash tool that generates Base64-encoded `username:password` combos — ideal for HTTP Basic Auth brute-forcing via **Burp Suite**, `ffuf`, `curl`, etc.
 
 ---
 
-## ✨ Features
+## ⚡ Why Use It?
 
-- 🔁 Supports 1:1 username-password mapping (same index match)
-- 🧠 Automatically trims longer list to match shorter one
-- 🧪 Designed for Basic Auth fuzzing
-- 🐚 Pure Bash – no dependencies beyond `base64` and `grep`
+- Converts `username:password` to Base64 (for Basic Auth)
+- Supports 1:1 pairing only (line-by-line)
+- Trims longer list to match the shorter
+- Output is ready for direct use in headers
 
 ---
 
@@ -17,3 +17,74 @@
 
 ```bash
 ./Bash64Wordlist -u usernames.txt -p passwords.txt -o output.txt
+```
+
+### Args:
+
+| Flag | Description         |
+|------|---------------------|
+| `-u` | Username wordlist   |
+| `-p` | Password wordlist   |
+| `-o` | Output file (Base64) |
+
+---
+
+## 📁 Example
+
+**usernames.txt**
+```
+admin
+root
+user
+```
+
+**passwords.txt**
+```
+admin123
+toor
+1234
+```
+
+**output.txt**
+```
+YWRtaW46YWRtaW4xMjM=
+cm9vdDp0b29y
+dXNlcjoxMjM0
+```
+
+---
+
+## 🔥 Use Cases
+
+### Burp Suite:
+Replace in headers:
+```
+Authorization: Basic <payload>
+```
+
+### curl:
+```bash
+curl -H "Authorization: Basic YWRtaW46YWRtaW4xMjM=" https://target.com
+```
+
+---
+
+## ✅ Tested On
+
+- Kali Linux
+- Ubuntu
+- WSL2
+- macOS
+
+---
+
+## 📜 License
+
+MIT — Free for commercial and personal use.
+
+---
+
+## 👤 Author
+
+Built by @cryptspecter  
+Contributions welcome!
