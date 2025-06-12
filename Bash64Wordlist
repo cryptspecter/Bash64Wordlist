@@ -1,37 +1,37 @@
 #!/bin/bash
 
-# Parse flags
+# Bash64Wordlist - Generate base64(username:password) combos
+
+# Parse arguments
 while getopts u:p:o: flag; do
-    case "${flag}" in
-        u) userfile=${OPTARG};;
-        p) passfile=${OPTARG};;
-        o) outfile=${OPTARG};;
+    case "$flag" in
+        u) userfile="$OPTARG" ;;
+        p) passfile="$OPTARG" ;;
+        o) outfile="$OPTARG" ;;
+        *) echo "Usage: $0 -u <user_file> -p <pass_file> -o <output_file>"; exit 1 ;;
     esac
 done
 
-# Input validation
-if [[ -z "$userfile" || -z "$passfile" || -z "$outfile" ]]; then
-    echo "Usage: $0 -u <username_file> -p <password_file> -o <output_file>"
+# Validate input
+[[ -z "$userfile" || -z "$passfile" || -z "$outfile" ]] && {
+    echo "Usage: $0 -u <user_file> -p <pass_file> -o <output_file>"
     exit 1
-fi
+}
 
-# Read and clean usernames and passwords into arrays
-mapfile -t usernames < <(grep -v '^$' "$userfile")
-mapfile -t passwords < <(grep -v '^$' "$passfile")
+# Load non-empty lines into arrays
+readarray -t users < <(grep -v '^\s*$' "$userfile")
+readarray -t passes < <(grep -v '^\s*$' "$passfile")
 
-# Get minimum length
-len_users=${#usernames[@]}
-len_pass=${#passwords[@]}
-min_len=$(( len_users < len_pass ? len_users : len_pass ))
+# Determine pair count (1:1 mapping)
+count=${#users[@]}
+[[ ${#passes[@]} -lt $count ]] && count=${#passes[@]}
 
-# Clear output file
+# Clear output
 > "$outfile"
 
-# Generate 1:1 Base64 encoded output
-for (( i=0; i<min_len; i++ )); do
-    combo="${usernames[$i]}:${passwords[$i]}"
-    encoded=$(echo -n "$combo" | base64)
-    echo "$encoded" >> "$outfile"
+# Encode and write
+for ((i=0; i<count; i++)); do
+    printf '%s\n' "${users[i]}:${passes[i]}" | base64 >> "$outfile"
 done
 
-echo "[+] Generated $min_len Base64 credentials in: $outfile"
+echo "[+] Generated $count base64 credentials → $outfile"
