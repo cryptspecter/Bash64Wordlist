@@ -13,10 +13,32 @@
 
 ---
 
+## ✅ **Install**
+
+```bash
+git clone https://github.com/cryptspecter/Bash64Wordlist.git
+cd Bash64Wordlist
+chmod +x Bash64Wordlist
+```
+
+To make it globally accessible:
+
+```bash
+sudo cp Bash64Wordlist /usr/local/bin/
+```
+
+Then you can run it from anywhere:
+
+```bash
+Bash64Wordlist -u usernames.txt -p passwords.txt -o output.txt
+```
+
+---
+
 ## 📦 Usage
 
 ```bash
-./Bash64Wordlist -u usernames.txt -p passwords.txt -o output.txt
+Bash64Wordlist -u usernames.txt -p passwords.txt -o output.txt
 ```
 
 ### Args:
@@ -66,15 +88,6 @@ Authorization: Basic <payload>
 ```bash
 curl -H "Authorization: Basic YWRtaW46YWRtaW4xMjM=" https://target.com
 ```
-
----
-
-## ✅ Tested On
-
-- Kali Linux
-- Ubuntu
-- WSL2
-- macOS
 
 ---
 
